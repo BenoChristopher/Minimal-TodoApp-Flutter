@@ -1,4 +1,4 @@
-# exercise2_app
+# minimal_todo_app
 
 A new Flutter project.
 
