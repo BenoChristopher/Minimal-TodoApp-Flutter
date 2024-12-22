@@ -1,6 +1,8 @@
 import 'package:exercise2_app/data/database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
+import 'components/dateandtime.dart';
 import 'components/dialogbox.dart';
 import 'components/todotile.dart';
 
@@ -82,34 +84,77 @@ class _TodoPageState extends State<HomePage> {
     db.updateData();
   }
 
+  void taskDone() {}
+
+  var date = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[200],
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.deepPurple,
-        title: Center(
-          child: Text('TO DO 😼',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        ),
+        title: Datetimemonth(),
+        // title: Center(
+        //   child: Text(date.toString(),
+        //       style: TextStyle(fontWeight: FontWeight.bold)),
+        // ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black87,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+
         onPressed: createNewTask,
         // to create new task
 
-        child: Icon(Icons.add),
-      ),
-      body: ListView.builder(
-        itemCount: db.todoList.length,
-        itemBuilder: (context, index) => TodoTile(
-          taskName: db.todoList[index][0],
-          taskCompleted: db.todoList[index][1],
-          onChanged: (value) => tapCheckBox(value, index),
-          deleteTask: (context) => deleteTask(index),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
         ),
       ),
+      body: Stack(children: [
+        // Positioned.fill(
+        //     child: Image.asset(
+        //   'assets/v904-nunny-012-f.jpg',
+        //   fit: BoxFit.fill,
+        // )),
+
+        Positioned.fill(
+            child: Image.asset(
+          'assets/vecteezy_purple-gradient-shade_21103429.png',
+          fit: BoxFit.fitHeight,
+        )),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Divider between active and completed tasks
+            Divider(
+              thickness: 2,
+              color: Colors.grey[300],
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 40,
+                top: 10,
+              ),
+              child: Text('ToDo',
+                  style:
+                      GoogleFonts.nunito(textStyle: TextStyle(fontSize: 25))),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: db.todoList.length,
+                itemBuilder: (context, index) => TodoTile(
+                  taskName: db.todoList[index][0],
+                  taskCompleted: db.todoList[index][1],
+                  onChanged: (value) => tapCheckBox(value, index),
+                  deleteTask: (context) => deleteTask(index),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ]),
     );
   }
 }
